@@ -1,4 +1,9 @@
-﻿<h1>Welcom, @ViewBag.username to test view</h1>
+﻿@{
+    ViewData["Title"] = "Test";
+}
+<a asp-action="ShowData">Show Data</a>
+
+<h1>Welcom, @ViewBag.username to test view</h1>
 
 <h1>Welcom, @ViewData["MyName"]  to test view</h1>
 
