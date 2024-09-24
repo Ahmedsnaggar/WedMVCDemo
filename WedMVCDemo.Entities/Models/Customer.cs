@@ -2,7 +2,7 @@
 
 namespace WedMVCDemo.Entities.Models
 {
-    public class Customer
+    public class Customer : MainModel
     {
         public int Id { get; set; }
         [StringLength(50)]

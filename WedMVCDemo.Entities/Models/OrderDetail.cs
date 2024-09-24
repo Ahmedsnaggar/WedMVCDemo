@@ -1,6 +1,6 @@
 ﻿namespace WedMVCDemo.Entities.Models
 {
-    public class OrderDetail
+    public class OrderDetail : MainModel
     {
         public int Id { get; set; }
         public int orderId { get; set; }

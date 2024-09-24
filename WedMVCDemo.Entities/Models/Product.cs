@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WedMVCDemo.Entities.Models
 {
-    public class Product
+    public class Product : MainModel
     {
         public int Id { get; set; }
         [StringLength(50)]
@@ -13,5 +13,7 @@ namespace WedMVCDemo.Entities.Models
         public int categoryId { get; set; }
         public Category? category { get; set; }
         public string? ProductImage { get; set; }
+        [NotMapped]
+        public List<Category> categoriesList { get; set; }
     }
 }

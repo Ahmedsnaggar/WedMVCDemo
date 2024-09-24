@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using WedMVCDemo.Entities.Models;
+using WedMVCDemo.Interfaces;
 using WedMVCDemo.Models;
+using WedMVCDemo.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<MyDbContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+
+builder.Services.AddScoped<IStoreRepository, StoreRepository>();
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 var app = builder.Build();
 

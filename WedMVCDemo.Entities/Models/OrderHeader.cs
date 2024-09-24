@@ -1,6 +1,6 @@
 ﻿namespace WedMVCDemo.Entities.Models
 {
-    public class OrderHeader
+    public class OrderHeader : MainModel
     {
         public int Id { get; set; }
         public DateTime OrderDate { get; set; } = DateTime.Now;
