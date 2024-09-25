@@ -7,8 +7,8 @@
 <h1>Create Product</h1>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
+    <div class="col-md-6">
+        <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="ProductName" class="control-label"></label>
@@ -41,20 +41,31 @@
             </div>
             <div class="form-group">
                 <label asp-for="ProductImage" class="control-label"></label>
-                <input asp-for="ProductImage" class="form-control" />
-                <span asp-validation-for="ProductImage" class="text-danger"></span>
+                <input asp-for="ImageFile" class="form-control" onchange="loadfile(event)" />
             </div>
-            <div class="form-group">
+            <div class="form-group float-end mt-3">
                 <input type="submit" value="Create" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-danger">Cancel</a>
             </div>
         </form>
     </div>
+    <div class="col-md-6">
+        <img id="output" width="100%"/>
+    </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+        var loadfile = function(event){
+            debugger
+            var output = document.getElementById('output');
+            output.src = URL.createObjectURL(event.target.files[0]);
+            output.onload = function () {
+                URL.revokeObjectURL(output.src);
+            }
+        }
+    </script>
 }

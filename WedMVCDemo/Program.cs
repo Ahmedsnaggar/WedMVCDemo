@@ -13,7 +13,7 @@ builder.Services.AddDbContext<MyDbContext>(opt => opt.UseSqlServer(builder.Confi
 
 builder.Services.AddScoped<IStoreRepository, StoreRepository>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-
+builder.Services.AddScoped<IFileUpload, FileUpload>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

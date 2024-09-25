@@ -11,16 +11,23 @@ namespace WedMVCDemo.Controllers
     {
         private IGenericRepository<Product> _productRepository;
         private IGenericRepository<Category> _categoryRepository;
-        public ProductsController(IGenericRepository<Product> productRepository, IGenericRepository<Category> categoryRepository)
+        private IFileUpload _fileUpload;
+        public ProductsController(IGenericRepository<Product> productRepository, IGenericRepository<Category> categoryRepository, IFileUpload fileUpload)
         {
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;
+            _fileUpload = fileUpload;
         }
 
         // GET: ProductsController
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(string search = null)
         {
             var products = await _productRepository.GetAllAsync(incules: new[] { "category"});
+            if(search != null)
+            {
+                ViewBag.Search = search;
+                products = await _productRepository.GetAllAsync(p=> p.ProductName.Contains(search));
+            }
             return View("ProductsList", products);
         }
 
@@ -47,6 +54,11 @@ namespace WedMVCDemo.Controllers
         {
             try
             {
+                if (item.ImageFile != null)
+                {
+                   string imagepath =  await _fileUpload.UploadFileAsync("\\Images\\Products", item.ImageFile);
+                    item.ProductImage = imagepath;
+                }
                await  _productRepository.AddItemAsync(item);
                 return RedirectToAction(nameof(Index));
             }
@@ -71,6 +83,11 @@ namespace WedMVCDemo.Controllers
         {
             try
             {
+                if (item.ImageFile != null)
+                {
+                    string imagepath = await _fileUpload.UploadFileAsync("\\Images\\Products", item.ImageFile);
+                    item.ProductImage = imagepath;
+                }
                 await _productRepository.UpdateItemAsync(item);
                 return RedirectToAction(nameof(Index));
             }

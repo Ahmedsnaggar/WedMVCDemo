@@ -3,13 +3,37 @@
 @{
     ViewData["Title"] = "Products List";
 }
-
-<h1>Products List</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<div class="row">
+    <div class="col-md-6">
+    <h1>Products List</h1>
+    </div>
+    <div class="col-md-6">
+        <div class=" float-end btn btn-success text-light">
+            <a asp-action="Create" class="text-light" style="text-decoration:none;">New</a>
+        </div>
+    </div>
+</div>
+<hr />
+<form asp-action="index" method="get">
+    <label class="control-label">Search</label>
+    <div class="row">
+        <div class="col-md-6">
+            <input type="text" name="search" class="form-control" value="@ViewBag.Search" />
+        </div>
+        <div class="col-md-6">
+        <button type="submit" class="btn btn-info">Search</button>
+        </div>
+    </div>
+    
+</form>
+<hr />
+<div class="row">
+@foreach(var item in Model)
+{
+        <partial name="_ProductsCardsPartial" model="item" />
+}
+</div>
+@* <table class="table">
     <thead>
         <tr>
             <th>
@@ -52,7 +76,15 @@
                     @Html.DisplayFor(modelItem => item.category.CategoryName)
                 </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ProductImage)
+                    @if(item.ProductImage == "" || item.ProductImage == null)
+                    {
+                        <img src="\Images\Products\no-image.jpg" alt="No image" width="100px" />
+                    }
+                    else
+                    {
+                        <img src="@item.ProductImage" alt="No image" width="100px" />
+                    }
+                       
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
@@ -62,4 +94,4 @@
         </tr>
 }
     </tbody>
-</table>
+</table> *@

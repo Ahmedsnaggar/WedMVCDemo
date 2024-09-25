@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WedMVCDemo.Entities.Models
@@ -15,5 +16,7 @@ namespace WedMVCDemo.Entities.Models
         public string? ProductImage { get; set; }
         [NotMapped]
         public List<Category> categoriesList { get; set; }
+        [NotMapped]
+        public IFormFile ImageFile { get; set; }
     }
 }
