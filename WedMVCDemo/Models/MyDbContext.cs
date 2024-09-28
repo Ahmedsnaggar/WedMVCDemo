@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using WedMVCDemo.Entities.Models;
 namespace WedMVCDemo.Models
 {
-    public class MyDbContext : DbContext
+    public class MyDbContext : IdentityDbContext<AppUser>
     {
         public MyDbContext(DbContextOptions<MyDbContext> options) : base(options) 
         {
@@ -14,5 +15,6 @@ namespace WedMVCDemo.Models
         public DbSet<Product> Products { get; set; }
         public DbSet<OrderHeader> OrderHeaders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
+        public DbSet<UserType> UserTypes { get; set; }
     }
 }

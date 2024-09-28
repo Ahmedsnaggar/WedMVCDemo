@@ -31,6 +31,18 @@ namespace WedMVCDemo.Controllers
             return View("ProductsList", products);
         }
 
+        [HttpGet]
+        public async Task<ActionResult> SearchByAjax(string search = null)
+        {
+            var products = await _productRepository.GetAllAsync(incules: new[] { "category" });
+            if (search != null)
+            {
+                ViewBag.Search = search;
+                products = await _productRepository.GetAllAsync(p => p.ProductName.Contains(search));
+            }
+            return PartialView("_ProductsCardsPartial", products);
+        }
+
         // GET: ProductsController/Details/5
         public async Task<ActionResult> Details(int id)
         {

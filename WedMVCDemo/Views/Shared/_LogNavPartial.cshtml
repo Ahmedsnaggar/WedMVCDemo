@@ -1,0 +1,15 @@
+﻿@inject SignInManager<AppUser> _signInManager;
+
+
+<ul class="navbar-nav">
+
+    @if (_signInManager.IsSignedIn(User))
+    {
+        <li class="nav-item"><a class="nav-link text-dark">Hello, @User.Identity.Name</a></li>
+        <li class="nav-item"><a class="nav-link text-dark">Logout</a></li>
+    }
+ else{
+        <li class="nav-item"><a class="nav-link text-dark" asp-controller="Account"asp-action="Register">Register</a></li>
+        <li class="nav-item"><a class="nav-link text-dark">Login</a></li>
+    }
+</ul>
