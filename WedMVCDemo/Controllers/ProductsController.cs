@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WedMVCDemo.Entities.Models;
@@ -7,6 +8,7 @@ using WedMVCDemo.Models;
 
 namespace WedMVCDemo.Controllers
 {
+    [Authorize]
     public class ProductsController : Controller
     {
         private IGenericRepository<Product> _productRepository;
@@ -18,7 +20,7 @@ namespace WedMVCDemo.Controllers
             _categoryRepository = categoryRepository;
             _fileUpload = fileUpload;
         }
-
+        [AllowAnonymous]
         // GET: ProductsController
         public async Task<ActionResult> Index(string search = null)
         {
@@ -30,7 +32,7 @@ namespace WedMVCDemo.Controllers
             }
             return View("ProductsList", products);
         }
-
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult> SearchByAjax(string search = null)
         {
@@ -42,7 +44,7 @@ namespace WedMVCDemo.Controllers
             }
             return PartialView("_ProductsCardsPartial", products);
         }
-
+        [AllowAnonymous]
         // GET: ProductsController/Details/5
         public async Task<ActionResult> Details(int id)
         {

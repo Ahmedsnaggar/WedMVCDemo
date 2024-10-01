@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WedMVCDemo.Entities.Models;
 using WedMVCDemo.Interfaces;
 
 namespace WedMVCDemo.Controllers
 {
+    [Authorize]
     public class StoresController : Controller
     {
         private IStoreRepository _storeRepository;

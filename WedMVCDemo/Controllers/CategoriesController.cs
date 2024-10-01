@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WedMVCDemo.Entities.Models;
 using WedMVCDemo.Interfaces;
@@ -6,6 +7,7 @@ using WedMVCDemo.Models;
 
 namespace WedMVCDemo.Controllers
 {
+    [Authorize(Roles ="AdminsRole, UsersRole")]
     public class CategoriesController : Controller
     {
         private IGenericRepository<Category> _categoryRepository;
@@ -27,13 +29,13 @@ namespace WedMVCDemo.Controllers
             var catrgory = await _categoryRepository.GetByIdAsync(id);
             return View(catrgory);
         }
-
+        [Authorize(Roles = "AdminsRole")]
         // GET: CategoriesController/Create
         public ActionResult Create()
         {
             return View();
         }
-
+        [Authorize(Roles = "AdminsRole")]
         // POST: CategoriesController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -56,7 +58,7 @@ namespace WedMVCDemo.Controllers
                 return View();
             }
         }
-
+        [Authorize(Roles = "AdminsRole")]
         // GET: CategoriesController/Edit/5
         [HttpGet]
         public async Task<ActionResult> Edit(int id)
@@ -64,7 +66,7 @@ namespace WedMVCDemo.Controllers
             var category = await _categoryRepository.GetByIdAsync(id);
             return View(category);
         }
-
+        [Authorize(Roles = "AdminsRole")]
         // POST: CategoriesController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -83,14 +85,14 @@ namespace WedMVCDemo.Controllers
                 return View();
             }
         }
-
+        [Authorize(Roles = "AdminsRole")]
         // GET: CategoriesController/Delete/5
         public async Task<ActionResult> Delete(int id)
         {
             var category = await _categoryRepository.GetByIdAsync(id);
             return View(category);
         }
-
+        [Authorize(Roles = "AdminsRole")]
         // POST: CategoriesController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]

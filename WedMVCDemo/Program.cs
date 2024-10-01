@@ -26,6 +26,11 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(opt =>
 builder.Services.AddScoped<IStoreRepository, StoreRepository>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IFileUpload, FileUpload>();
+builder.Services.ConfigureApplicationCookie(opt =>
+{
+    opt.AccessDeniedPath = new PathString("/account/AccessDeniedCustom");
+    opt.LoginPath = new PathString("/account/Unauthentecated");
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
