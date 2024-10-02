@@ -15,7 +15,6 @@ namespace WedMVCDemo.Controllers
         {
             _categoryRepository = categoryRepositor;
         }
-
         // GET: CategoriesController
         public async Task<ActionResult> Index()
         {

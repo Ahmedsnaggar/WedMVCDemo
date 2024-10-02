@@ -8,7 +8,7 @@ namespace WedMVCDemo.Controllers
     public class AccountController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
-        private readonly SignInManager<AppUser> _signInManager;
+        private readonly SignInManager<AppUser> _signInManager;        
         public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
         {
             _userManager = userManager;
@@ -59,8 +59,13 @@ namespace WedMVCDemo.Controllers
                 var user = await _userManager.FindByNameAsync(model.UserName);
                 if (user == null)
                 {
-                    ModelState.AddModelError(string.Empty, "User not found");
-                    return View(model);
+                    user = await _userManager.FindByEmailAsync(model.UserName);
+                    if (user == null)
+                    {
+                        ModelState.AddModelError(string.Empty, "User not found");
+                        return View(model);
+                    }
+                    
                 }
                 var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
                 if (result.Succeeded)

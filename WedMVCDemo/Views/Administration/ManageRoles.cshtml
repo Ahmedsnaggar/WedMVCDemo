@@ -1,0 +1,36 @@
+﻿@model UserRolesViewModel
+
+@{
+    ViewData["Title"] = "Manage user roles";
+}
+
+<form asp-action="UpdateRoles" method="post">
+    <div class="card">
+        <div class="card-header">
+            <h1>User : <span>@Model.UserName</span></h1>
+            <h1>Email : <span>@Model.UserEmail</span></h1>
+        </div>
+        <div class="card-body">
+            <input asp-for="UserID" />
+            @* @foreach(var item in Model.UserRoles)
+            {
+                <input asp-for="@item.RoleName" />
+            }
+ *@
+            @for (int i = 0; i < Model.UserRoles.Count; i++)
+            {
+                <input asp-for="@Model.UserRoles[i].RoleName" />
+                <div class="form-check">
+                    <input asp-for="UserRoles[i].ISSelected" />
+                    <label asp-for="UserRoles[i].ISSelected">@Model.UserRoles[i].RoleName</label>
+                    </div>
+            }
+        </div>
+        <div class="card-footer">
+            <div class="form-group float-end">
+                <input type="submit" value="Save" class="btn btn-success" />
+                <a asp-action="GetAllUsers" class="btn btn-danger">Cancel</a>
+            </div>
+        </div>
+    </div>
+</form>
