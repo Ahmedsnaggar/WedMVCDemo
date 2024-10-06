@@ -8,18 +8,21 @@ using WedMVCDemo.Models;
 
 namespace WedMVCDemo.Controllers
 {
-    [Authorize(Roles ="AdminsRole")]
+    [Authorize]
     public class AdministrationController : Controller
     {
         private RoleManager<IdentityRole> _roleManager;
         private UserManager<AppUser> _userManager;
-        public AdministrationController(RoleManager<IdentityRole> roleManager, UserManager<AppUser> userManager)
+        private IHttpContextAccessor _contextAccessor;
+        public AdministrationController(RoleManager<IdentityRole> roleManager, UserManager<AppUser> userManager, IHttpContextAccessor contextAccessor)
         {
             _roleManager = roleManager;
             _userManager = userManager;
+            _contextAccessor = contextAccessor;
         }
 
         #region Roles
+        [Authorize(Roles = "AdminsRole")]
         public async Task<IActionResult> GetAllRole()
         {
             var roles = await _roleManager.Roles.Select(r => new RolesViewModel()
@@ -29,13 +32,14 @@ namespace WedMVCDemo.Controllers
             }).ToListAsync();
             return View(roles);
         }
-
+        [Authorize(Roles = "AdminsRole")]
         public IActionResult CreateRole()
         {
             string RoleId = Guid.NewGuid().ToString();
             RolesViewModel roles = new RolesViewModel() { Id = RoleId};
             return View(roles);
         }
+        [Authorize(Roles = "AdminsRole")]
         [HttpPost]
         public async Task<IActionResult> CreateRole(RolesViewModel item)
         {
@@ -68,6 +72,7 @@ namespace WedMVCDemo.Controllers
         #endregion
 
         #region Users
+        [Authorize(Roles = "AdminsRole")]
         public async Task<IActionResult> GetAllUsers()
         {
             var users = await _userManager.Users.Select(u => new UsersViewModel()
@@ -80,7 +85,7 @@ namespace WedMVCDemo.Controllers
 
             return View(users);
         }
-
+        [Authorize(Roles = "AdminsRole")]
         public async Task<IActionResult> ManageRoles(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -107,7 +112,7 @@ namespace WedMVCDemo.Controllers
 
             return View(model);
         }
-
+        [Authorize(Roles = "AdminsRole")]
         public async Task<IActionResult> UpdateRoles(UserRolesViewModel model)
         {
             var user = await _userManager.FindByIdAsync(model.UserID);
@@ -121,6 +126,34 @@ namespace WedMVCDemo.Controllers
             await _userManager.AddToRolesAsync(user, model.UserRoles.Where(r=> r.ISSelected).Select(rr=> rr.RoleName).ToList());
 
             return RedirectToAction("GetAllUsers");
+        }
+
+        
+        [Authorize]
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                string username = _contextAccessor.HttpContext.User.Identity.Name;
+                var currentUser = await _userManager.FindByNameAsync(username);
+                var result = await _userManager.ChangePasswordAsync(currentUser, model.CurrentPassword, model.NewPassword);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("index", "home");
+                }
+                foreach(var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+            return View(model);
         }
         #endregion
     }
